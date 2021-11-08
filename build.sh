@@ -29,7 +29,7 @@ make_uboot () {
 
 git clone https://github.com/rockchip-linux/rkbin.git
 
-make_uboot orange-pi-5 orangepi_5_defconfig
+make_uboot orangepi-5 orangepi_5_defconfig
 make_uboot rock-5a rock-5a-rk3588s_defconfig
 make_uboot rock-5b rock-5a-rk3588s_defconfig
 make_uboot nanopi-r6 nanopi6_defconfig
