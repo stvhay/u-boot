@@ -429,21 +429,6 @@
 		status = "disabled";
 	};
 
-	crypto: crypto@fe370000 {
-		compatible = "rockchip,rk3588-crypto";
-		reg = <0x0 0xfe370000 0x0 0x4000>;
-		clocks = <&scmi_clk SCMI_CRYPTO_CORE>, <&scmi_clk SCMI_CRYPTO_PKA>;
-		clock-names = "sclk_crypto", "apkclk_crypto";
-		clock-frequency = <350000000>, <350000000>;
-		status = "disabled";
-	};
-
-	rng: rng@fe378000 {
-		compatible = "rockchip,trngv1";
-		reg = <0x0 0xfe378000 0x0 0x200>;
-		status = "disabled";
-	};
-
 	hdptxphy1: phy@fed70000 {
 		compatible = "rockchip,rk3588-hdptx-phy";
 		reg = <0x0 0xfed70000 0x0 0x2000>;
