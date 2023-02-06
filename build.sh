@@ -7,19 +7,27 @@ mkdir -p blobs
 mkdir -p staging
 
 make_uboot () {
+    board=$1
+    target=$2
+    make CROSS_COMPILE=aarch64-linux-gnu- mrproper || exit 1
+
     pushd blobs || exit 1
     rm -f * || exit 1
     wget  https://github.com/radxa/rkbin/raw/master/bin/rk35/${bl31} || exit 1
     wget  https://github.com/radxa/rkbin/raw/master/bin/rk35/${memspec} || exit 1
+    ../rkbin/tools/ddrbin_tool -g gen_param.txt ${memspec}
+    sed -ie 's/\(uart baudrate\=\).*/\1115200/' gen_param.txt
+    cp ${memspec}{,.backup}
+    ../rkbin/tools/ddrbin_tool gen_param.txt ${memspec}
     popd || exit 1
-    board=$1
-    target=$2
+
     mkdir -p staging/${board} || exit 1
-    make CROSS_COMPILE=aarch64-linux-gnu- mrproper || exit 1
     make CROSS_COMPILE=aarch64-linux-gnu- -j9 ${target} BL31=blobs/${bl31} spl/u-boot-spl.bin u-boot.dtb u-boot.itb || exit 1
-    tools/mkimage -n rk3588 -d blobs/${memspec}:spl/u-boot-spl.bin staging/${board}/idbloader.img || exit 1
+    tools/mkimage -n rk3588 -T rksd -d blobs/${memspec}:spl/u-boot-spl.bin staging/${board}/idbloader.img || exit 1
     mv -v u-boot.itb staging/${board}/ || exit 1
 }
+
+git clone https://github.com/rockchip-linux/rkbin.git
 
 make_uboot orange-pi-5 orangepi_5_defconfig
 make_uboot rock-5a rock-5a-rk3588s_defconfig
