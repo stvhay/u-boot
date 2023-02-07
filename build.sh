@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bl31=rk3588_bl31_v1.28.elf
+bl31=rk3588_bl31_v1.34.elf
 memspec=rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.08.bin
 
 mkdir -p blobs
@@ -31,5 +31,5 @@ git clone https://github.com/rockchip-linux/rkbin.git
 
 make_uboot orangepi-5 orangepi_5_defconfig
 make_uboot rock-5a rock-5a-rk3588s_defconfig
-make_uboot rock-5b rock-5a-rk3588s_defconfig
+make_uboot rock-5b rock-5b-rk3588_defconfig
 make_uboot nanopi-r6 nanopi6_defconfig
