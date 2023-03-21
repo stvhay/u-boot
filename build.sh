@@ -1,7 +1,7 @@
 #!/bin/bash
 
-bl31=rk3588_bl31_v1.34.elf
-memspec=rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.08.bin
+bl31=rk3588_bl31_v1.37.elf
+memspec=rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.10.bin
 
 mkdir -p blobs
 mkdir -p staging
@@ -12,13 +12,11 @@ make_uboot () {
     make CROSS_COMPILE=aarch64-linux-gnu- mrproper || exit 1
 
     pushd blobs || exit 1
-    rm -f * || exit 1
-    wget  https://github.com/radxa/rkbin/raw/master/bin/rk35/${bl31} || exit 1
-    wget  https://github.com/radxa/rkbin/raw/master/bin/rk35/${memspec} || exit 1
-    ../rkbin/tools/ddrbin_tool -g gen_param.txt ${memspec}
-    sed -ie 's/\(uart baudrate\=\).*/\1115200/' gen_param.txt
-    cp ${memspec}{,.backup}
-    ../rkbin/tools/ddrbin_tool gen_param.txt ${memspec}
+        rm -f gen_param.txt
+        ../rkbin/tools/ddrbin_tool -g gen_param.txt ${memspec}
+        sed -i -e 's/\(uart baudrate\=\).*/\1115200/' gen_param.txt
+        cp ${memspec}{,.backup}
+        ../rkbin/tools/ddrbin_tool gen_param.txt ${memspec}
     popd || exit 1
 
     mkdir -p staging/${board} || exit 1
